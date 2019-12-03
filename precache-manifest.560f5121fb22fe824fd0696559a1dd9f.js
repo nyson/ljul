@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4fea0ea50ab61b63f7d617cff87a31c4",
+    "revision": "6a12172b4ecc7bb09a257ae12c691ddf",
     "url": "/ljul/index.html"
   },
   {
-    "revision": "4f743949504ff9246f86",
+    "revision": "bf2a6353fc6e5c15794d",
     "url": "/ljul/static/css/main.6eb5c2a5.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ljul/static/js/2.0f5b76a4.chunk.js"
   },
   {
-    "revision": "4f743949504ff9246f86",
-    "url": "/ljul/static/js/main.6cc52170.chunk.js"
+    "revision": "bf2a6353fc6e5c15794d",
+    "url": "/ljul/static/js/main.d79f1794.chunk.js"
   },
   {
     "revision": "cd95310e97bb7935970b",
