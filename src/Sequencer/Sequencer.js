@@ -62,6 +62,8 @@ class Sequencer extends React.Component {
     return (
       <div 
           className="sequencer"
+          onClick={e => this.updateAtPosition(e)}
+          onMouseLeave={e => this.setState({isDrawing: false})}
           onMouseMove={e => this.drawIfClicked(e)}
           onMouseDown={e => this.startDrawing(e)}
           onMouseUp={e => this.stopDrawing(e)}
@@ -87,6 +89,7 @@ class Sequencer extends React.Component {
   }
 
   updateAtPosition(e) {
+    console.debug(e);
     const [x, y, height, width] = [
       e.pageX - e.currentTarget.offsetLeft, 
       e.pageY - e.currentTarget.offsetTop,
