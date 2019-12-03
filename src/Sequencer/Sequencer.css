@@ -1,0 +1,18 @@
+.sequencer {
+  height: 200px;
+  width: 600px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  background-color: yellow;
+}
+
+.bar {
+  background-color: red;
+  height: 100%;
+  width: 20%;
+}
+
+.bar.hover {
+  background-color: blue;
+}
