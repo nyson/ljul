@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/ljul/static/css/main.9b9c529a.chunk.css",
-    "main.js": "/ljul/static/js/main.a696703a.chunk.js",
-    "main.js.map": "/ljul/static/js/main.a696703a.chunk.js.map",
+    "main.js": "/ljul/static/js/main.800c9760.chunk.js",
+    "main.js.map": "/ljul/static/js/main.800c9760.chunk.js.map",
     "runtime-main.js": "/ljul/static/js/runtime-main.49f55c96.js",
     "runtime-main.js.map": "/ljul/static/js/runtime-main.49f55c96.js.map",
     "static/js/2.6e2e4237.chunk.js": "/ljul/static/js/2.6e2e4237.chunk.js",
     "static/js/2.6e2e4237.chunk.js.map": "/ljul/static/js/2.6e2e4237.chunk.js.map",
     "index.html": "/ljul/index.html",
-    "precache-manifest.1a58b510798e39c753a5eae6a0e40161.js": "/ljul/precache-manifest.1a58b510798e39c753a5eae6a0e40161.js",
+    "precache-manifest.783c69f466d7cb999389d4c7d89b9c2e.js": "/ljul/precache-manifest.783c69f466d7cb999389d4c7d89b9c2e.js",
     "service-worker.js": "/ljul/service-worker.js",
     "static/css/main.9b9c529a.chunk.css.map": "/ljul/static/css/main.9b9c529a.chunk.css.map"
   },
@@ -16,6 +16,6 @@
     "static/js/runtime-main.49f55c96.js",
     "static/js/2.6e2e4237.chunk.js",
     "static/css/main.9b9c529a.chunk.css",
-    "static/js/main.a696703a.chunk.js"
+    "static/js/main.800c9760.chunk.js"
   ]
 }
