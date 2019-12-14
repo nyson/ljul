@@ -1,18 +1,17 @@
 .sequencer {
   height: 200px;
-  width: 600px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  background-color: yellow;
 }
+h3 {color: #fff;}
 
 .bar {
-  background-color: red;
   height: 100%;
   width: 20%;
 }
 
 .bar.hover {
-  background-color: blue;
+
 }

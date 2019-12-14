@@ -1,52 +1,78 @@
 import React from 'react';
 import './Sequencer.css';
+import { Bar } from './Bar';
+import Prando from 'prando';
 
-class Bar extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      hover: false,
-      value: this.props.max
-    };
-  }
-  enter(e) {
-    this.setState({hover: true});
-  }
-
-  leave(e) {
-    this.setState({hover: false});
-  }
-  
-  render() {
-    return(
-      <div
-        key={this.props.id}
-        className={"bar " + (this.state.hover ? "hover" : "")} 
-        onMouseEnter={e => this.enter(e)}
-        onMouseLeave={e => this.leave(e)}
-        style={{height: this.props.value * 100 + "%"}}
-
-        />
-    );
-  }
-}
 
 class Sequencer extends React.Component {
   constructor(props) {
     super(props);
 
-    
     const bars = Array.from(
-      {length: 10}, 
+      {length: this.props.bars},
       (e) => ({ value: 1 })
     );
-    
+
     this.state = {
       bars,
-      isDrawing: false
-    }
+      isDrawing: false,
+      colors: this.genColorScheme(
+        this.props.baseColor,
+        new Prando(this.props.name))
+    };
 
+    console.debug(this.state.colors);
+  }
+
+  hex2RGB(col) {
+    return this.i2RGB(parseInt(col, 16));
+  }
+
+  i2RGB(x) {
+    const hex2 = Math.pow(16, 2);
+    return {
+      red: Math.floor(x / Math.pow(16, 4)),
+      green: Math.floor(x / hex2) % hex2,
+      blue: x % hex2
+    };
+  }
+
+  RGB2hex(rgb) {
+    return [rgb.red, rgb.green, rgb.blue]
+      .map(x => Math.floor(x).toString(16))
+      .join("");
+  }
+
+  hexAdd(hex1, hex2) {
+    return {
+      red: hex1.red + hex2.red,
+      blue: hex1.blue + hex2.blue,
+      green: hex1.green + hex2.green
+    };
+  }
+ 
+  genColorScheme(col, rng) {
+    const hexBase = this.hex2RGB(col);
+    for(const i in hexBase) hexBase[i] /= 2;
+    const cols = {
+      header: this.hexAdd(hexBase, this.hex2RGB("111111")),
+      bg: this.hexAdd(hexBase, this.rngCol(rng)),
+      bar: this.hexAdd(hexBase, this.rngCol(rng)),
+      barSelected: this.hexAdd(hexBase, this.rngCol(rng))
+    };
+    for(const i in cols) cols[i] = this.RGB2hex(cols[i]);
+    return cols;
+  }
+
+  rngCol(rng) {
+    const g = () => rng.next(0, Math.pow(16, 2) / 2);
+    const r = {
+      red: g(),
+      blue: g(),
+      green: g()
+    };
+    return r;
   }
 
   startDrawing(e) {
@@ -54,33 +80,47 @@ class Sequencer extends React.Component {
   }
 
   stopDrawing(e) {
-    this.setState({isDrawing: false})
-    console.log(this.state.bars.map(b => Math.round(b.value * 100)))
+    this.setState({isDrawing: false});
+    this.props.onUpdate(this.state.bars);
   }
-  
+
   render() {
     return (
-      <div 
+      <>
+        <h3
+          style={{backgroundColor: '#' + this.state.colors.header}}
+        >{this.props.name}</h3>
+        <div
           className="sequencer"
-          onClick={e => this.updateAtPosition(e)}
+          style={{backgroundColor: '#' + this.state.colors.bg}}
+          onClick={e => {
+            this.updateAtPosition(e);
+            this.stopDrawing(e);
+          }}
           onMouseLeave={e => this.setState({isDrawing: false})}
+          onMouseEnter={e => this.setState({isDrawing: false})}
           onMouseMove={e => this.drawIfClicked(e)}
           onMouseDown={e => this.startDrawing(e)}
           onMouseUp={e => this.stopDrawing(e)}
-          >
-        {this.state.bars.map((b, i) => 
-          <Bar 
-            key={i} 
-            id={i} 
-            max={this.props.max}
-            min={this.props.min}
-            value={b.value}
-            />
-        )}
+        >
+          {this.state.bars.map(
+            (b, i) =>
+              <Bar
+                highlight={'#' + this.state.colors.barSelected}
+                color={'#' + this.state.colors.bar}
+                key={i}
+                id={i}
+                max={this.props.max}
+                min={this.props.min}
+                value={b.value}
+              />)}
 
-      </div>
+        </div>
+      </>
     );
   }
+
+  barId = (xpos, width) => Math.floor(xpos / (width / this.props.bars));
 
   drawIfClicked(e) {
     if(this.state.isDrawing) {
@@ -88,33 +128,26 @@ class Sequencer extends React.Component {
     }
   }
 
+
   updateAtPosition(e) {
-    console.debug(e);
-    const [x, y, height, width] = [
-      e.pageX - e.currentTarget.offsetLeft, 
+    const [x, y, h, w] = [
+      e.pageX - e.currentTarget.offsetLeft,
       e.pageY - e.currentTarget.offsetTop,
       e.currentTarget.offsetHeight,
       e.currentTarget.offsetWidth
     ];
-    const percHeight = 1 - y / height;
-    const barId = Math.floor(x / ( width / this.props.bars));
 
+    this.updateBar(
+      this.barId(x,w),
+      bar => bar.value = 1-y/h
+      );
+  }
+
+  updateBar(id, updater) {
     const bars = this.state.bars;
-    bars[barId].value = percHeight;
-    this.setState({bars})
-
+    updater(bars[id]);
+    this.setState({bars});
   }
-
-  barClick(e) {
-    console.log(e);
-    console.log(e.clientX, e.clientY);
-    console.log(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    console.log(e.currentTarget);
-  }
-
-
-
-
 }
 
 export default Sequencer;
