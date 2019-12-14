@@ -25,10 +25,8 @@ class App extends React.Component {
       .join("|");
   }
   update(st) {
-    console.log("updating...", st);
     this.setState({...st});
     this.forceUpdate();
-    console.log(this.state);
   }
 
   render(){

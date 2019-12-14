@@ -21,8 +21,6 @@ class Sequencer extends React.Component {
         this.props.baseColor,
         new Prando(this.props.name))
     };
-
-    console.debug(this.state.colors);
   }
 
   hex2RGB(col) {

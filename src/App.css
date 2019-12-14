@@ -1,4 +1,10 @@
+body {
+    background-color: #474a51;
+    color: #fff;
+}
+
 pre {
+    text-align: center;
     font-size: 0.7em;
 }
 
