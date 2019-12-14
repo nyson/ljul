@@ -1,52 +1,20 @@
 import React from 'react';
 import './Sequencer.css';
-
-class Bar extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      hover: false,
-      value: this.props.max
-    };
-  }
-  enter(e) {
-    this.setState({hover: true});
-  }
-
-  leave(e) {
-    this.setState({hover: false});
-  }
-  
-  render() {
-    return(
-      <div
-        key={this.props.id}
-        className={"bar " + (this.state.hover ? "hover" : "")} 
-        onMouseEnter={e => this.enter(e)}
-        onMouseLeave={e => this.leave(e)}
-        style={{height: this.props.value * 100 + "%"}}
-
-        />
-    );
-  }
-}
+import { Bar } from './Bar';
 
 class Sequencer extends React.Component {
   constructor(props) {
     super(props);
 
-    
     const bars = Array.from(
-      {length: 10}, 
+      {length: this.props.bars}, 
       (e) => ({ value: 1 })
     );
-    
+
     this.state = {
       bars,
       isDrawing: false
     }
-
   }
 
   startDrawing(e) {
@@ -55,15 +23,22 @@ class Sequencer extends React.Component {
 
   stopDrawing(e) {
     this.setState({isDrawing: false})
-    console.log(this.state.bars.map(b => Math.round(b.value * 100)))
+    this.props.onUpdate(this.state.bars
+      .map(b => Math.round(b.value * 100))
+      .join(" | ")
+      )
   }
   
   render() {
     return (
       <div 
           className="sequencer"
-          onClick={e => this.updateAtPosition(e)}
+          onClick={e => {
+            this.updateAtPosition(e)
+            this.stopDrawing(e)
+          }}
           onMouseLeave={e => this.setState({isDrawing: false})}
+          onMouseEnter={e => this.setState({isDrawing: false})}
           onMouseMove={e => this.drawIfClicked(e)}
           onMouseDown={e => this.startDrawing(e)}
           onMouseUp={e => this.stopDrawing(e)}
@@ -75,12 +50,13 @@ class Sequencer extends React.Component {
             max={this.props.max}
             min={this.props.min}
             value={b.value}
-            />
-        )}
+            />)}
 
       </div>
     );
   }
+
+  barId = (xpos, width) => Math.floor(xpos / (width / this.props.bars));
 
   drawIfClicked(e) {
     if(this.state.isDrawing) {
@@ -88,33 +64,26 @@ class Sequencer extends React.Component {
     }
   }
 
+
   updateAtPosition(e) {
-    console.debug(e);
-    const [x, y, height, width] = [
+    const [x, y, h, w] = [
       e.pageX - e.currentTarget.offsetLeft, 
       e.pageY - e.currentTarget.offsetTop,
       e.currentTarget.offsetHeight,
       e.currentTarget.offsetWidth
     ];
-    const percHeight = 1 - y / height;
-    const barId = Math.floor(x / ( width / this.props.bars));
 
+    this.updateBar(
+      this.barId(x,w),
+      bar => bar.value = 1-y/h
+      );
+  }
+
+  updateBar(id, updater) {
     const bars = this.state.bars;
-    bars[barId].value = percHeight;
-    this.setState({bars})
-
+    updater(bars[id]);
+    this.setState({bars});
   }
-
-  barClick(e) {
-    console.log(e);
-    console.log(e.clientX, e.clientY);
-    console.log(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    console.log(e.currentTarget);
-  }
-
-
-
-
 }
 
 export default Sequencer;
