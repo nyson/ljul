@@ -2,7 +2,7 @@ import React from 'react';
 import './Sequencer.css';
 import { Bar } from './Bar';
 import Prando from 'prando';
-
+import {RGB, genScheme} from '../Colors.js';
 
 
 class Sequencer extends React.Component {
@@ -17,60 +17,17 @@ class Sequencer extends React.Component {
     this.state = {
       bars,
       isDrawing: false,
-      colors: this.genColorScheme(
-        this.props.baseColor,
-        new Prando(this.props.name))
+      colors: {
+        header: RGB.fromHex(this.props.baseColor)
+          .map(x => x / 2)
+          .add(RGB.fromHex('#ffffff').map(x => x/2))
+          .toHex(),
+        ...genScheme(
+          this.props.baseColor,
+          ["bg", "bar", "barSelected"],
+          new Prando(this.props.name))
+      }
     };
-  }
-
-  hex2RGB(col) {
-    return this.i2RGB(parseInt(col, 16));
-  }
-
-  i2RGB(x) {
-    const hex2 = Math.pow(16, 2);
-    return {
-      red: Math.floor(x / Math.pow(16, 4)),
-      green: Math.floor(x / hex2) % hex2,
-      blue: x % hex2
-    };
-  }
-
-  RGB2hex(rgb) {
-    return [rgb.red, rgb.green, rgb.blue]
-      .map(x => Math.floor(x).toString(16))
-      .join("");
-  }
-
-  hexAdd(hex1, hex2) {
-    return {
-      red: hex1.red + hex2.red,
-      blue: hex1.blue + hex2.blue,
-      green: hex1.green + hex2.green
-    };
-  }
- 
-  genColorScheme(col, rng) {
-    const hexBase = this.hex2RGB(col);
-    for(const i in hexBase) hexBase[i] /= 2;
-    const cols = {
-      header: this.hexAdd(hexBase, this.hex2RGB("111111")),
-      bg: this.hexAdd(hexBase, this.rngCol(rng)),
-      bar: this.hexAdd(hexBase, this.rngCol(rng)),
-      barSelected: this.hexAdd(hexBase, this.rngCol(rng))
-    };
-    for(const i in cols) cols[i] = this.RGB2hex(cols[i]);
-    return cols;
-  }
-
-  rngCol(rng) {
-    const g = () => rng.next(0, Math.pow(16, 2) / 2);
-    const r = {
-      red: g(),
-      blue: g(),
-      green: g()
-    };
-    return r;
   }
 
   startDrawing(e) {
@@ -86,11 +43,11 @@ class Sequencer extends React.Component {
     return (
       <>
         <h3
-          style={{backgroundColor: '#' + this.state.colors.header}}
+          style={{backgroundColor: this.state.colors.header}}
         >{this.props.name}</h3>
         <div
           className="sequencer"
-          style={{backgroundColor: '#' + this.state.colors.bg}}
+          style={{backgroundColor: this.state.colors.bg}}
           onClick={e => {
             this.updateAtPosition(e);
             this.stopDrawing(e);
@@ -104,8 +61,8 @@ class Sequencer extends React.Component {
           {this.state.bars.map(
             (b, i) =>
               <Bar
-                highlight={'#' + this.state.colors.barSelected}
-                color={'#' + this.state.colors.bar}
+                highlight={this.state.colors.barSelected}
+                color={this.state.colors.bar}
                 key={i}
                 id={i}
                 max={this.props.max}

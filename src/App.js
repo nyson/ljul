@@ -36,8 +36,8 @@ class App extends React.Component {
           max={this.state.max}
           min={this.state.min}
           bars={this.state.bars}
-          baseColor="ef0ad4"
-          name="Pink"
+          baseColor="#ef0ad4"
+          name="Pinku"
           onUpdate={bars => {
             const st = this.state;
             st.seqs.pink = bars;
@@ -50,7 +50,7 @@ class App extends React.Component {
           max={this.state.max}
           min={this.state.min}
           bars={this.state.bars}
-          baseColor="ff0000"
+          baseColor="#ff0000"
           name="Red"
           onUpdate={bars => {
             const st = this.state;
@@ -64,7 +64,7 @@ class App extends React.Component {
           max={this.state.max}
           min={this.state.min}
           bars={this.state.bars}
-          baseColor="00ff00"
+          baseColor="#00ff00"
           name="Green"
           onUpdate={bars => {
             const st = this.state;
@@ -78,7 +78,7 @@ class App extends React.Component {
           max={this.state.max}
           min={this.state.min}
           bars={this.state.bars}
-          baseColor="0000ff"
+          baseColor="#0000ff"
           name="Blue"
           onUpdate={bars => {
             const st = this.state;
