@@ -1,6 +1,5 @@
 import React from 'react';
 import Sequencer from './Sequencer/Sequencer.js';
-import NumberInput from './NumberInput.js';
 import './App.css';
 
 class App extends React.Component {

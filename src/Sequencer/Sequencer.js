@@ -1,6 +1,6 @@
 import React from 'react';
 import './Sequencer.css';
-import { Bar } from './Bar';
+import Bar from './Bar';
 import Prando from 'prando';
 import {RGB, genScheme} from '../Colors.js';
 
