@@ -1,0 +1,4 @@
+* TODO generate colors for sequencers
+based on color + randomly generated colors
+* TODO fix the css
+* TODO connect a backend
